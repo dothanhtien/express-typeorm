@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import "reflect-metadata";
 import { appDataSource } from "./database/app-data-source";
 import rootRouter from "./routes";
+import { errorHandler } from "./middlewares";
 
 dotenv.config();
 
@@ -10,11 +11,11 @@ dotenv.config();
 appDataSource
   .initialize()
   .then(() => {
-    console.log("🔒[database]: Data Source has been initialized!");
+    console.log("🔒 [database]: Data Source has been initialized!");
   })
   .catch((err) => {
     console.error(
-      "🚫[database]: Error during Data Source initialization:",
+      "🚫 [database]: Error during Data Source initialization:",
       err
     );
   });
@@ -29,8 +30,10 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", rootRouter);
 
+app.use(errorHandler);
+
 const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, () => {
-  console.log(`🚀[server]: Server is running on port ${PORT}`);
+  console.log(`🚀 [server]: Server is running on port ${PORT}`);
 });
