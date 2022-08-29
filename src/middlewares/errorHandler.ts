@@ -1,5 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { HttpException } from "../utils/exceptions";
+import {
+  HttpException,
+  InternalServerErrorException,
+} from "../utils/exceptions";
 
 export const errorHandler = (
   err: HttpException,
@@ -7,8 +10,11 @@ export const errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  const statusCode = err.statusCode || 500;
-  const message = err.message || "Internal server error";
+  if (!err.statusCode) {
+    err = new InternalServerErrorException();
+  }
+
+  const { statusCode, message } = err;
 
   res.status(statusCode).json({
     status: "error",
