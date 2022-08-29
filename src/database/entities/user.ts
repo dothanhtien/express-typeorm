@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-@Entity()
+@Entity("users")
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
@@ -18,20 +18,20 @@ export class User {
   password: string;
 
   @Column({ nullable: true })
-  firstName: string;
+  first_name: string;
 
   @Column({ nullable: true })
-  lastName: string;
+  last_name: string;
 
   @Column({ nullable: true })
-  phoneNumber: string;
+  phone_number: string;
 
   @Column({ type: "date", nullable: true })
-  dateOfBirth: string;
+  date_of_birth: string;
 
   @CreateDateColumn({ type: "timestamp" })
-  createdAt: Date;
+  created_at: Date;
 
   @UpdateDateColumn({ type: "timestamp" })
-  updatedAt: Date;
+  updated_at: Date;
 }

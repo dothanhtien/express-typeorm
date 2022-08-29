@@ -1,13 +1,15 @@
-import { User } from "../database/entities/user";
 import { userRepository } from "../database/repositories";
+import { transformtoUserModel } from "../requests";
+import { UserResponse } from "../responses";
 
 export const checkUserExistsByEmail = async (email: string) => {
   const count = await userRepository.countBy({ email });
   return count > 0;
 };
 
-export const createUser = async (input: User) => {
-  const newUser = userRepository.create(input);
+export const createUser = async (input: UserResponse) => {
+  const mappedData = transformtoUserModel(input);
+  const newUser = userRepository.create(mappedData);
   const result = await userRepository.save(newUser);
 
   return result;

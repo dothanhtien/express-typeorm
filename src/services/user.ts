@@ -7,6 +7,7 @@ import {
 } from "../stores";
 import { BadRequestException, NotFoundException } from "../utils/exceptions";
 import { hashPassword } from "../utils/auth";
+import { transformToUserResponse } from "../responses";
 
 export const createUserService = async (req: Request) => {
   const { email, password } = req.body;
@@ -20,13 +21,13 @@ export const createUserService = async (req: Request) => {
 
   const user = await createUser({ ...req.body, password: hashedPassword });
 
-  return { statusCode: 201, user };
+  return { statusCode: 201, user: transformToUserResponse(user) };
 };
 
 export const getUsersService = async (req: Request) => {
   const users = await getUsers();
 
-  return { users };
+  return { users: users.map((x) => transformToUserResponse(x)) };
 };
 
 export const getUserService = async (req: Request) => {
@@ -37,5 +38,5 @@ export const getUserService = async (req: Request) => {
     throw new NotFoundException("User does not exist");
   }
 
-  return { user };
+  return { user: transformToUserResponse(user) };
 };
