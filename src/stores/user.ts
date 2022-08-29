@@ -2,6 +2,11 @@ import { userRepository } from "../database/repositories";
 import { transformtoUserModel } from "../requests";
 import { UserResponse } from "../responses";
 
+export const checkUserExistsById = async (id: number) => {
+  const count = await userRepository.countBy({ id });
+  return count > 0;
+};
+
 export const checkUserExistsByEmail = async (email: string) => {
   const count = await userRepository.countBy({ email });
   return count > 0;
@@ -25,4 +30,9 @@ export const getUserById = async (id: number) => {
 
 export const getUserByEmail = async (email: string) => {
   return await userRepository.findOneBy({ email });
+};
+
+export const deleteUserById = async (id: number) => {
+  const result = await userRepository.delete(id);
+  return result;
 };

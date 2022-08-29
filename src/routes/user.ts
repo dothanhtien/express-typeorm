@@ -3,6 +3,7 @@ import { checkSchema } from "express-validator";
 import { catchRequestError } from "../middlewares";
 import {
   createUserService,
+  deleteUserService,
   getUserService,
   getUsersService,
 } from "../services";
@@ -18,5 +19,6 @@ userRouter.post(
 );
 userRouter.get("/", serviceWrapper(getUsersService));
 userRouter.get("/:id", serviceWrapper(getUserService));
+userRouter.delete("/:id", serviceWrapper(deleteUserService));
 
 export default userRouter;

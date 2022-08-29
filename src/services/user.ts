@@ -1,7 +1,9 @@
 import { Request } from "express";
 import {
   checkUserExistsByEmail,
+  checkUserExistsById,
   createUser,
+  deleteUserById,
   getUserById,
   getUsers,
 } from "../stores";
@@ -39,4 +41,17 @@ export const getUserService = async (req: Request) => {
   }
 
   return { user: transformToUserResponse(user) };
+};
+
+export const deleteUserService = async (req: Request) => {
+  const { id } = req.params;
+
+  const isExist = await checkUserExistsById(+id);
+  if (!isExist) {
+    throw new NotFoundException("User does not exist");
+  }
+
+  await deleteUserById(+id);
+
+  return true;
 };
