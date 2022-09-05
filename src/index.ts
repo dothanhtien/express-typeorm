@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import "reflect-metadata";
+import morgan from "morgan";
 import { appDataSource } from "./database/app-data-source";
 import rootRouter from "./routes";
 import { errorHandler } from "./middlewares";
@@ -21,6 +22,8 @@ appDataSource
   });
 
 const app = express();
+
+app.use(morgan("dev"));
 
 // parse incoming requests with JSON payloads and is based on body-parser
 app.use(express.json());
